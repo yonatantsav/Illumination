@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Aug 8, 2010 10:37:58 AM
+
+     processing.py
+     Write processing sketches in Python
+
+     jdf
+     ====================================================================== -->
+<project name="processing.py" default="jar">
+	<description>
+            Write processing sketches in Python
+  	</description>
+
+	<target name="newversion" depends="bumpversion,clean,dist" />
+
+	<target name="dist" depends="jar">
+		<property file="runtime/src/jycessing/buildnumber.properties"
+		          prefix="jycessing" />
+		<property name="dist" value="processing.py-${jycessing.buildnumber}" />
+		<delete dir="dist" />
+		<mkdir dir="dist/${dist}" />
+		<copy todir="dist/${dist}">
+			<fileset file="processing-py.jar" />
+			<fileset file="LICENSE.txt" />
+			<fileset dir="."
+			         includes="examples.py/**,libraries/processing/**"
+			         excludes="**.class"/>
+		</copy>
+		<zip basedir="dist" includes="${dist}/**" destfile="dist/${dist}.zip" />
+		<tar compression="gzip"
+		     basedir="dist"
+		     includes="${dist}/**"
+		     destfile="dist/${dist}.tgz" />
+	</target>
+
+	<target name="jar" depends="build">
+		<jar destfile="processing-py.jar">
+			<fileset dir="bin" excludes="jycessing/build/**,test/**" />
+			<zipgroupfileset file="buildtime/lib/jython/jython.jar" />
+			<zipgroupfileset file="buildtime/lib/processing/core.jar" />
+			<manifest>
+				<attribute name="Main-Class" value="jycessing.Runner" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="build" depends="generate-driver">
+		<mkdir dir="bin" />
+		<javac classpath="buildtime/lib/jython/jython.jar:buildtime/lib/processing/core.jar"
+		       destdir="bin">
+			<src path="runtime/src" />
+			<src path="runtime/generated" />
+		</javac>
+		<copy todir="bin">
+			<fileset dir="runtime/src" excludes="**/*.java" />
+		</copy>
+	</target>
+
+  <target name="generate-driver"
+          description="Generate DriverImpl class">
+      <java classpath="buildtime/lib/jython/jython.jar:buildtime/lib/processing/core.jar"
+            classname="org.python.util.jython"
+            fork="true">
+          <arg value="buildtime/py/cog.py"/>
+          <arg value="-U"/>
+          <arg value="-o"/>
+          <arg value="runtime/generated/jycessing/DriverImpl.java"/>
+          <arg value="buildtime/template/DriverImpl.java.cog"/>
+      </java>
+  </target>
+
+	<target name="clean">
+		<delete dir="bin" />
+		<delete file="runtime/generated/jycessing/DriverImpl.java" />
+		<mkdir dir="bin" />
+	</target>
+
+	<target name="bumpversion">
+		<propertyfile file="runtime/src/jycessing/buildnumber.properties">
+			<entry key="buildnumber"
+			       type="int"
+			       operation="+"
+			       pattern="0000"
+			       default="0000" />
+		</propertyfile>
+	</target>
+
+</project>
