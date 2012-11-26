@@ -26,7 +26,7 @@ class Illuminate(object):
 		self.wordMargin = 3 #controls size of the box around the word
 
 		#instantiate class vars
-#PGraphics self.pg
+		PGraphics self.pg
 		self.makePoems = False
 		self.flipImage = False
 		
@@ -61,6 +61,7 @@ class Illuminate(object):
 			calib = [507,324,535,297]
 		self.imgPos = [int(calib[0]),int(calib[1])]
 		self.imgSize = [int(calib[2]),int(calib[3])]
+        self.imgRot = [int(calib[4])]
 		self.saveCalib();
 		#set screen
 		#setLocation(1280,0)
@@ -77,6 +78,7 @@ class Illuminate(object):
 		self.wordCnt = 0
 		#self.loadNewImage()
 		noCursor()
+		pg = createGraphics(width, height)
 	
 	def init(self):
 		print "init called - jack kalish"
@@ -143,6 +145,9 @@ class Illuminate(object):
 		self.capture() #convert to tiff
 		
 	def draw(self):
+        #set the rotation of the stage
+		rotate(self.imgRot)
+        
 		#check the sensors
 		self.checkSensors()
 		
@@ -437,7 +442,14 @@ class Illuminate(object):
 		elif key==32:
 			#spacebar - run
 			self.onClick()
-	
+		elif key=='9'
+			#rotate right
+			self.imgRot --;
+		elif key=='0'
+			#rotate right
+			self.imgRot ++;
+
+
 	def mousePressed(self):
 		print "mouse pressed"
 		#self.onClick()
