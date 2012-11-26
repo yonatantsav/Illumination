@@ -18,17 +18,21 @@ imgPath = 'captures/Capture_00001.JPG'
 
 class Illuminate(object):
 	def setup(self):
-		#instantiate class vars
-		self.makePoems = False
-		self.flipImage = False
+		#~~CONTROL VARS~~#
 		self.fadeAlpha = 4
 		self.fadeSpeed = 15
 		self.lightColor = [255,230,182]
+		self.speed = 300 #overall speed of showing each word
+		self.wordMargin = 3 #controls size of the box around the word
+
+		#instantiate class vars
+#PGraphics self.pg
+		self.makePoems = False
+		self.flipImage = False
+		
 		#self.lightColor = 0xFFEF91
 		self.calibrate = False
-		self.speed = 250
 		self.showImg = 1
-		self.wordMargin = 3
 		self.boxList = []
 		self.currentBoxNum = [0]
 		self.lastTime = [0]
