@@ -26,7 +26,6 @@ class Illuminate(object):
 		self.wordMargin = 3 #controls size of the box around the word
 
 		#instantiate class vars
-		PGraphics self.pg
 		self.makePoems = False
 		self.flipImage = False
 		
@@ -58,10 +57,10 @@ class Illuminate(object):
 			self.imgPos = [int(calib[0]),int(calib[1])]
 		except:
 			#set default calib value
-			calib = [507,324,535,297]
+			calib = [507,324,535,297,0]
 		self.imgPos = [int(calib[0]),int(calib[1])]
 		self.imgSize = [int(calib[2]),int(calib[3])]
-        self.imgRot = [int(calib[4])]
+		self.imgRot = int(calib[4])
 		self.saveCalib();
 		#set screen
 		#setLocation(1280,0)
@@ -78,7 +77,6 @@ class Illuminate(object):
 		self.wordCnt = 0
 		#self.loadNewImage()
 		noCursor()
-		pg = createGraphics(width, height)
 	
 	def init(self):
 		print "init called - jack kalish"
@@ -146,7 +144,7 @@ class Illuminate(object):
 		
 	def draw(self):
         #set the rotation of the stage
-		rotate(self.imgRot)
+		rotate(float(radians(self.imgRot)))
         
 		#check the sensors
 		self.checkSensors()
@@ -354,12 +352,16 @@ class Illuminate(object):
 		self.imgSize[0] += x
 		self.imgSize[1] += y
 		self.saveCalib()
+
+	def rotateStage(self,r):
+		self.imgRot += r
+		self.saveCalib()
 		
 	def saveCalib(self):
 		print "save calib"
 		f = open('config.txt', 'r+')
 		f.truncate()
-		calib = str(self.imgPos[0])+","+str(self.imgPos[1])+","+str(self.imgSize[0])+","+str(self.imgSize[1])
+		calib = str(self.imgPos[0])+","+str(self.imgPos[1])+","+str(self.imgSize[0])+","+str(self.imgSize[1])+","+str(self.imgRot)
 		print "calib: "+calib
 		f.write(calib)
 		f.close()	
@@ -442,13 +444,15 @@ class Illuminate(object):
 		elif key==32:
 			#spacebar - run
 			self.onClick()
-		elif key=='9'
+		elif key==48:
 			#rotate right
-			self.imgRot --;
-		elif key=='0'
+			self.rotateStage(-1);
+		elif key==57:
 			#rotate right
-			self.imgRot ++;
-
+			self.rotateStage(+1);
+		elif key=="i":
+			#display image toggle
+			self.calibrate = not self.calibrate	
 
 	def mousePressed(self):
 		print "mouse pressed"
