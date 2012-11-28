@@ -19,6 +19,8 @@ int NOTHING = 0;
 int OPEN = 1;// clip is open, in transit (fsr low, switch low)
 int EMPTY = 2;//   # clip is closed, no paper in (fsr high, switch high)
 int READY = 3;//   # clip is closed, paper in place (fsr high, switch low)
+
+boolean debug = true;
 		
 
 void setup() {
@@ -29,8 +31,15 @@ void setup() {
 void loop() {
   int returnval = NOTHING;
   // read the analog in value:
-  sensor1Value = analogRead(analogInPin1);            
+  sensor1Value = analogRead(analogInPin1);     
+
   sensor2Value = analogRead(analogInPin2);
+  
+  if(debug){
+        Serial.print("sensor1Value: ");   
+                Serial.println(sensor1Value);   
+      //Serial.print("sensor2Value: "+sensor2Value);
+  }
   if (sensor2Value < switchthreshold) {
     returnval = OPEN;
     if (sensor1Value > pressureThreshold){
@@ -65,5 +74,5 @@ void loop() {
   // wait 10 milliseconds before the next loop
   // for the analog-to-digital converter to settle
   // after the last reading:
-  delay(1000);                     
+  delay(100);                     
 }

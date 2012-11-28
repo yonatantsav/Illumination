@@ -143,8 +143,6 @@ class Illuminate(object):
 		self.capture() #convert to tiff
 		
 	def draw(self):
-        #set the rotation of the stage
-		rotate(float(radians(self.imgRot)))
         
 		#check the sensors
 		self.checkSensors()
@@ -162,9 +160,15 @@ class Illuminate(object):
 		#print "self.lines: ",
 		#print self.lines
 		
+		#set the rotation of the stage
+		pushMatrix();
+		rotate(float(radians(self.imgRot)))
+
 		if self.calibrate:
 			image(self.img, self.imgPos[0], self.imgPos[1], self.imgSize[0], self.imgSize[1])
-		
+
+		popMatrix();
+
 		
 		if self.makePoems:
 			if len(self.lines)>0:
@@ -198,9 +202,13 @@ class Illuminate(object):
 							#print self.wordCnt
 							#print "line[self.wordCnt] ",
 							#print self.line[self.wordCnt]
+
+                            #draw boxes for words
 							try:
+								pushMatrix();
+								rotate(float(radians(self.imgRot)))
 								self.lightWord(self.line[self.wordCnt])
-								#self.lightNextMt()
+								popMatrix();
 								self.showTime = math.sqrt(self.getCurrentWordLength())*self.speed
 							except:
 								print "word out of range!"
@@ -208,10 +216,12 @@ class Illuminate(object):
 							self.fadeAlpha = 2
 						self.lastTime[0] = millis()
 					fill(0,0,0,self.fadeAlpha)
+                    #fade out
 					rect(0,0,width,height)
 				else:
 					#we gotta end it here, no more lines!
 					self.end()
+
 					
 
 	def light(self):
