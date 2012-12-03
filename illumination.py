@@ -18,17 +18,20 @@ imgPath = 'captures/Capture_00001.JPG'
 
 class Illuminate(object):
 	def setup(self):
-		#instantiate class vars
-		self.makePoems = False
-		self.flipImage = False
+		#~~CONTROL VARS~~#
 		self.fadeAlpha = 4
 		self.fadeSpeed = 15
 		self.lightColor = [255,230,182]
+		self.speed = 300 #overall speed of showing each word
+		self.wordMargin = 3 #controls size of the box around the word
+
+		#instantiate class vars
+		self.makePoems = False
+		self.flipImage = False
+		
 		#self.lightColor = 0xFFEF91
 		self.calibrate = False
-		self.speed = 250
 		self.showImg = 1
-		self.wordMargin = 3
 		self.boxList = []
 		self.currentBoxNum = [0]
 		self.lastTime = [0]
@@ -54,9 +57,10 @@ class Illuminate(object):
 			self.imgPos = [int(calib[0]),int(calib[1])]
 		except:
 			#set default calib value
-			calib = [507,324,535,297]
+			calib = [507,324,535,297,0]
 		self.imgPos = [int(calib[0]),int(calib[1])]
 		self.imgSize = [int(calib[2]),int(calib[3])]
+		self.imgRot = int(calib[4])
 		self.saveCalib();
 		#set screen
 		#setLocation(1280,0)
@@ -139,6 +143,7 @@ class Illuminate(object):
 		self.capture() #convert to tiff
 		
 	def draw(self):
+        
 		#check the sensors
 		self.checkSensors()
 		
@@ -155,9 +160,15 @@ class Illuminate(object):
 		#print "self.lines: ",
 		#print self.lines
 		
+		#set the rotation of the stage
+		pushMatrix();
+		rotate(float(radians(self.imgRot)))
+
 		if self.calibrate:
 			image(self.img, self.imgPos[0], self.imgPos[1], self.imgSize[0], self.imgSize[1])
-		
+
+		popMatrix();
+
 		
 		if self.makePoems:
 			if len(self.lines)>0:
@@ -191,9 +202,13 @@ class Illuminate(object):
 							#print self.wordCnt
 							#print "line[self.wordCnt] ",
 							#print self.line[self.wordCnt]
+
+                            #draw boxes for words
 							try:
+								pushMatrix();
+								rotate(float(radians(self.imgRot)))
 								self.lightWord(self.line[self.wordCnt])
-								#self.lightNextMt()
+								popMatrix();
 								self.showTime = math.sqrt(self.getCurrentWordLength())*self.speed
 							except:
 								print "word out of range!"
@@ -201,10 +216,12 @@ class Illuminate(object):
 							self.fadeAlpha = 2
 						self.lastTime[0] = millis()
 					fill(0,0,0,self.fadeAlpha)
+                    #fade out
 					rect(0,0,width,height)
 				else:
 					#we gotta end it here, no more lines!
 					self.end()
+
 					
 
 	def light(self):
@@ -345,12 +362,16 @@ class Illuminate(object):
 		self.imgSize[0] += x
 		self.imgSize[1] += y
 		self.saveCalib()
+
+	def rotateStage(self,r):
+		self.imgRot += r
+		self.saveCalib()
 		
 	def saveCalib(self):
 		print "save calib"
 		f = open('config.txt', 'r+')
 		f.truncate()
-		calib = str(self.imgPos[0])+","+str(self.imgPos[1])+","+str(self.imgSize[0])+","+str(self.imgSize[1])
+		calib = str(self.imgPos[0])+","+str(self.imgPos[1])+","+str(self.imgSize[0])+","+str(self.imgSize[1])+","+str(self.imgRot)
 		print "calib: "+calib
 		f.write(calib)
 		f.close()	
@@ -433,7 +454,16 @@ class Illuminate(object):
 		elif key==32:
 			#spacebar - run
 			self.onClick()
-	
+		elif key==48:
+			#rotate right
+			self.rotateStage(-1);
+		elif key==57:
+			#rotate right
+			self.rotateStage(+1);
+		elif key=="i":
+			#display image toggle
+			self.calibrate = not self.calibrate	
+
 	def mousePressed(self):
 		print "mouse pressed"
 		#self.onClick()

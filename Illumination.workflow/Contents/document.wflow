@@ -253,7 +253,7 @@ java -d32 -jar -Xmx500M processing/processing-py.jar illumination.py
 			</array>
 		</dict>
 		<key>windowFrame</key>
-		<string>{{0, 91}, {1000, 735}}</string>
+		<string>{{84, 43}, {1000, 735}}</string>
 		<key>workflowViewScrollPosition</key>
 		<string>{{0, 0}, {619, 467}}</string>
 	</dict>
