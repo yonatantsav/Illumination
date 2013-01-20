@@ -25,6 +25,7 @@ TO RUN:
 2. wait 1-5 minutes
 
 
+-------------------
 INTERACTIVE VERSION
 
 1. Launch RemoteCapture
