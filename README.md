@@ -26,9 +26,9 @@ TO RUN:
 
 
 INTERACTIVE VERSION
-Launch RemoteCapture
 
+1. Launch RemoteCapture
 
-to run from console:
+2. to run from console:
 java -d32 -jar -Xmx500M processing/processing-py.jar illumination.py
 
