@@ -344,7 +344,6 @@ class Illuminate(object):
 		#fill(255,10)
 		fill(self.lightColor[0],self.lightColor[1],self.lightColor[2])
 		rect((float(r[0]))*xScale+self.imgPos[0]-(self.wordMargin), (float(r[1]))*yScale+self.imgPos[1]-(self.wordMargin), float(r[2])*xScale+(self.wordMargin*2), float(r[3])*yScale+(self.wordMargin*2))
-		#delay(1000)
 			
 	def moveImage(self,x,y):
 		self.imgPos[0] += x
@@ -462,8 +461,7 @@ class Illuminate(object):
 		#self.onClick()
 			
 	def processNewText(self):
-		time.sleep(3)
-
+		#time.sleep(3)
 		self.runThreadOn(self.run, self.onOCRComplete)
 		
 	def onClick(self):
