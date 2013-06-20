@@ -1,3 +1,6 @@
+*Version 005 -* updated with support for Tesseract Open Source OCR Engine v3.02.02 with Leptonica
+
+
 Illumination
 ============
 
@@ -32,4 +35,3 @@ INTERACTIVE VERSION
 
 2. to run from console:
 java -d32 -jar -Xmx500M processing/processing-py.jar illumination.py
-
