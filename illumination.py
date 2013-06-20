@@ -392,7 +392,7 @@ class Illuminate(object):
 	def parseWords(self):
 		soup = BeautifulSoup(open('output.html'))
 		print "parsing words..."
-		boxes = soup.findAll('span', { "class" : "ocr_word" })
+		boxes = soup.findAll('span', { "class" : "ocrx_word" })
 		cnt = 0
 		words = []
 		self.boxList = []
@@ -401,11 +401,15 @@ class Illuminate(object):
 			#generate arrary of only words
 			print word
 			w = ""
-			if len(word.contents) > 0 and len(word.contents[0].contents) > 0:
-			    w = word.contents[0].contents[0]
+            #if len(word.contents) > 0 and len(word.contents[0].contents) > 0:
+			    #w = word.contents[0].contents[0]
+            
+			if len(word.contents) > 0:
+			    w = word.contents[0]
+
 			words.append(w)
 			title = word['title']
-			#print "title: " + title
+			print "title: " + title
 			r = title.split(' ')
 			r.pop(0)
 			#generate another array of box data
@@ -417,8 +421,8 @@ class Illuminate(object):
 		print "words:",
 		print words
 		return words
-		#print "words array: "
-		#print words
+		print "words array: "
+		print words
 		
 	def keyPressed(self):
 		print "keypressed: "
