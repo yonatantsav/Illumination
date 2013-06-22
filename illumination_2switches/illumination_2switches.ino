@@ -53,7 +53,7 @@
          Serial.println(newState, DEC);
          
      }
-     delay(10);
+     delay(50);
      // check again to make sure reading wasn't a fluke
      if (newState == calcState(fsrValue,switchValue)){
        state = newState;

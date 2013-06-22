@@ -60,26 +60,28 @@ class MarkovGenerator(object):
   		
 
   def tokenizeArticle(self, articleArray): #done
-  	words = []
-  	positions = {}
-  	singleCharWords = ['a','i','m','s','d','t']
-  	i = -1
-	for element in articleArray:
-	  	i = i + 1
-	  	#Error happens here sometimes: TypeError: expected str or unicode but got <type 'instance'>
-  		terms = re.findall(r'\w+',element) 
-  		if len(terms) == 1:
-  			word = terms[0]
-  			if len(word) > 1 or word in singleCharWords:
-  				#word = word.lower()
-  				words.append(word)
-  				if word not in positions:
-  					positions[word] = []
+    words = []
+    positions = {}
+    singleCharWords = ['a','i','m','s','d','t']
+    i = -1
+    for element in articleArray:
+      i = i + 1
+      #Error happens here sometimes: TypeError: expected str or unicode but got <type 'instance'>
+      try:
+        terms = re.findall(r'\w+',element)
+      except:
+        print "finding terms failed"
+      if len(terms) == 1:
+        word = terms[0]
+        if len(word) > 1 or word in singleCharWords:
+          words.append(word)
+          if word not in positions:
+            positions[word] = []
   				#print word + " " + str(i) 
-  				positions[word].append(i)
-  	self.articleWords = words
-  	self.articleWordPositions = positions
-  	self.makeTagLists()
+          positions[word].append(i)
+    self.articleWords = words
+    self.articleWordPositions = positions
+    self.makeTagLists()
   
   
   def makeTagLists(self):

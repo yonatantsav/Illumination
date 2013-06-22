@@ -413,21 +413,23 @@ class Illuminate(object):
 			#ENCODE ascii to string
 			print type(w)
 			print w
-
-			#if type(w) == "unicode":
 			#w.encode('ascii','ignore')
 			#w.encode('ascii','replace')
-			words.append(w.string)
-			title = word['title']
-			print "title: " + title
-			r = title.split(' ')
-			r.pop(0)
-			#generate another array of box data
-			#convert array to processing rect object coords (x,y,W,H)
-			r[2] = float(r[2]) - float(r[0])
-			r[3] = float(r[3]) - float(r[1])
-			self.boxList.append([r[0], r[1], r[2], r[3]])
-			cnt += 1
+			if type(w) != type(None):
+				try:
+					words.append(w.string)
+					title = word['title']
+					print "title: " + title
+					r = title.split(' ')
+					r.pop(0)
+					#generate another array of box data
+					#convert array to processing rect object coords (x,y,W,H)
+					r[2] = float(r[2]) - float(r[0])
+					r[3] = float(r[3]) - float(r[1])
+					self.boxList.append([r[0], r[1], r[2], r[3]])
+					cnt += 1
+				except:
+					print "could not append word to word list"
 		print "words:",
 		print words
 		return words
