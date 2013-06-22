@@ -13,6 +13,7 @@ import imageadjuster.ImageAdjuster as ImageAdjuster;
 from threading import Thread
 from MarkovGenerator import MarkovGenerator
 from ArduinoSerialProcessing import ArduinoSerial
+import unicodedata
 
 imgPath = 'captures/Capture_00001.JPG'
 
@@ -115,14 +116,15 @@ class Illuminate(object):
 			files = glob.glob('captures/*')
 			print "len(files): ",
 			print len(files)
-			if len(files) > imageIndex:
-				imgPath = files[imageIndex]
+			if len(files) > 0:
+				imgPath = files[len(files)-1]
+				print imgPath
 				firstLetter = imgPath.split('/')[1][0]
 				print "imgPath: ",
 				print imgPath
 				print "firstLetter: ",
 				print firstLetter
-				if firstLetter == "C": 
+				if firstLetter == "I": 
 					#load image
 					try:
 						self.img = loadImage(imgPath)
@@ -407,7 +409,15 @@ class Illuminate(object):
 			if len(word.contents) > 0:
 			    w = word.contents[0]
 
-			words.append(w)
+			#unicodedata.normalize('NFKD', w).encode('ascii','ignore')
+			#ENCODE ascii to string
+			print type(w)
+			print w
+
+			#if type(w) == "unicode":
+			#w.encode('ascii','ignore')
+			#w.encode('ascii','replace')
+			words.append(w.string)
 			title = word['title']
 			print "title: " + title
 			r = title.split(' ')

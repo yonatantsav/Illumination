@@ -1,5 +1,6 @@
- const int fsrPin = 3;    // Analog input pin that the potentiometer is attached to
- const int switchPin = 2;   //Digital input pin that the switch is attached to
+ const int fsrPin = 0;    // pressure btn (white wires)
+ const int switchPin = 1;   //contact switch (black wires)
+ 
  int fsrValue = 0;   // value read from the fsr
  int switchValue = 0;   // value read from the switch
  
@@ -15,6 +16,10 @@
  
  void setup() {
    pinMode(switchPin, INPUT);
+   pinMode(fsrPin, INPUT);           // set pin to input
+  digitalWrite(switchPin, HIGH);       // turn on pullup resistors
+  digitalWrite(fsrPin, HIGH);       // turn on pullup resistors
+
    // initialize serial communications at 9600 bps:
    Serial.begin(9600); 
  }
@@ -23,12 +28,12 @@
    int newState = UNKNOWN;
    
    // measure inputs
-   fsrValue = digitalRead(fsrPin); // read the fsr value
+   fsrValue = digitalRead(fsrPin); // read the btn value
    switchValue = digitalRead(switchPin); // read the switch value
    
    // calculate current state
    newState = calcState(fsrValue,switchValue);
- /*  if (debug){
+   if (debug){
      Serial.print("state ");
      Serial.println(state, DEC);
      Serial.print("newState ");
@@ -38,7 +43,7 @@
      Serial.print("switch ");
      Serial.println(switchValue, DEC);
      //Serial.println(-1, DEC);
-   }*/
+   }
    // calculate change. report if change detected
    if (newState != state && newState != UNKNOWN){
      if (debug){
@@ -59,7 +64,7 @@
          delay(2000);
        }
        //report change
-     //  Serial.print(state, DEC);
+       Serial.print(state, DEC);
      }
    }
    delay(20); 
@@ -83,19 +88,19 @@
  
  int calcState(int fsr, int sw){
    int newState = UNKNOWN;
-   if (fsr == HIGH && sw == HIGH){
+   if (fsr == LOW && sw == LOW){
      newState = EMPTY;
      if (debug){ 
        Serial.println("EMPTY");
      }
    }
-   else if (fsr == HIGH && sw == LOW){
+   else if (fsr == LOW && sw == HIGH){
      newState = READY;
      if (debug){ 
        Serial.println("READY");
      }
    }
-   else if (fsr == LOW && sw == LOW){
+   else if (fsr == HIGH && sw == HIGH){
      newState = OPEN;
      if (debug){ 
        Serial.println("OPEN");
