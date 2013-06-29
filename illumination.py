@@ -20,6 +20,7 @@ imgPath = 'captures/Capture_00001.JPG'
 class Illuminate(object):
 	def setup(self):
 		#~~CONTROL VARS~~#
+		self.debug = True
 		self.fadeAlpha = 4
 		self.fadeSpeed = 15
 		self.lightColor = [255,230,182]
@@ -29,7 +30,6 @@ class Illuminate(object):
 		#instantiate class vars
 		self.makePoems = False
 		self.flipImage = False
-		
 		#self.lightColor = 0xFFEF91
 		self.calibrate = False
 		self.showImg = 1
@@ -44,6 +44,10 @@ class Illuminate(object):
 		self.lightOn = True
 		self.img = PImage()
 		self.sensors = ArduinoSerial()
+
+		#clear the terminal
+		self.reset()
+
 		#TRAIN THE MARKOV GENERATOR
 		print "reading and getting inspiration..."
 		self.generator = MarkovGenerator(n=3, max=30, min=4)
@@ -102,6 +106,7 @@ class Illuminate(object):
 	def loadNewImage(self):
 		print "loadNewImage"
 		self.clearPhotos()
+
 		#self.tryLoadImage(imgPath)
 		self.img = None
 		print "BEFORE LOAD ATTEMPT self.img: ",
@@ -510,6 +515,7 @@ class Illuminate(object):
 			self.processNewText()
 		
 	def stop(self):
+		self.reset()
 		self.loading=0
 		if self.makePoems:
 			self.lightOn = True
@@ -517,6 +523,10 @@ class Illuminate(object):
 		#kill any running threads
 		if self.thread:
 			self.thread._Thread__stop()
+
+	def reset(self):
+		#clear the terminal
+		os.system('cls' if os.name=='nt' else 'clear')
 
 illuminate = Illuminate()
 	
