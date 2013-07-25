@@ -117,9 +117,9 @@ class Illuminate(object):
 		loadSuccess = False
 		imageIndex = 0
 		while loadSuccess == False:
-			print "Try to load image"
+			#print "Try to load image"
 			files = glob.glob('captures/*')
-			print "len(files): ",
+			#print "len(files): ",
 			print len(files)
 			if len(files) > 0:
 				imgPath = files[len(files)-1]

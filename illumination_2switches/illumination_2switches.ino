@@ -1,4 +1,4 @@
- const int fsrPin = 0;    // pressure btn (white wires)
+      const int fsrPin = 0;    // pressure btn (white wires)
  const int switchPin = 1;   //contact switch (black wires)
  
  int fsrValue = 0;   // value read from the fsr
